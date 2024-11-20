@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_jadwal_perkuliahan_sem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="14dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JADWAL PERKULIAHAN SEMESTER"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GENAP 2024/2025"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_waktu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/ll_jadwal_perkuliahan_sem"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23 November"
+            android:id="@+id/tv_date"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_time"
+            android:text="00:00 AM"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginVertical="16dp"
+        android:id="@+id/iv_logo"
+        android:layout_marginStart="70dp"
+        android:src="@drawable/logoums"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ll_waktu"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tabel di dalam ScrollView -->
+    <android.widget.ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/scroll_jadwal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_jadwal_perkuliahan_sem"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/tablelayout_jadwal"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp">
+
+            <!-- Kepala Tabel -->
+            <TableRow
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mata Kuliah"
+                    android:id="@+id/table_matakuliah"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextWhite"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dosen"
+                    android:textStyle="bold"
+                    android:id="@+id/table_dosen"
+                    android:textColor="@color/colorTextWhite"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ruang Kelas"
+                    android:id="@+id/table_ruangkelas"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextWhite"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kelas"
+                    android:textStyle="bold"
+                    android:id="@+id/table_kelas"
+                    android:textColor="@color/colorTextWhite"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Keterangan"
+                    android:id="@+id/tabel_keterangan"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextWhite"
+                    android:padding="8dp" />
+            </TableRow>
+        </TableLayout>
+    </android.widget.ScrollView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/tv_ormawa"
+        android:textStyle="bold"
+        android:text="ORMAWA UMS"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/scroll_jadwal"
+        app:layout_constraintTop_toBottomOf="@+id/iv_logo"/>
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="350dp"
+        android:src="@drawable/img"
+        app:layout_constraintStart_toEndOf="@+id/scroll_jadwal"
+        android:id="@+id/iv_ormawa"
+        app:layout_constraintTop_toBottomOf="@id/tv_ormawa"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

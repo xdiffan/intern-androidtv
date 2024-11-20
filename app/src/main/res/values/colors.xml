@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Warna Dasar -->
+    <color name="colorPrimary">#2F3185</color>
+    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorSecondary">#03DAC5</color>
+    <color name="colorSecondaryVariant">#018786</color>
+    <color name="colorAccent">#FF5722</color>
+
+    <!-- Warna Latar Belakang -->
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorSurface">#F5F5F5</color>
+
+    <!-- Warna Teks -->
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorTextWhite">#FFFFFF</color>
+
+    <!-- Warna Status dan Navigasi -->
+    <color name="colorStatusBar">#3700B3</color>
+    <color name="colorNavigationBar">#FFFFFF</color>
+
+    <!-- Warna Custom -->
+    <color name="colorSuccess">#4CAF50</color> <!-- Hijau -->
+    <color name="colorError">#F44336</color>   <!-- Merah -->
+    <color name="colorWarning">#FFC107</color> <!-- Kuning -->
+    <color name="colorInfo">#2196F3</color>    <!-- Biru -->
+
+    <!-- Transparansi -->
+    <color name="colorTransparent">#00000000</color> <!-- Transparan -->
+    <color name="colorSemiTransparent">#80000000</color> <!-- Hitam Transparan -->
+</resources>
