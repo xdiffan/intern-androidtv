@@ -21,6 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="JADWAL PERKULIAHAN SEMESTER"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
@@ -30,6 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GENAP 2024/2025"
+            android:fontFamily="monospace"
+
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -40,9 +43,9 @@
         android:id="@+id/ll_waktu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginVertical="24dp"
         android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/iv_logo"
         app:layout_constraintStart_toEndOf="@id/ll_jadwal_perkuliahan_sem"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -50,6 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="23 November"
+            android:fontFamily="monospace"
+
             android:id="@+id/tv_date"
             android:textColor="@color/colorPrimary"
             android:textSize="22sp"
@@ -60,6 +65,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_time"
             android:text="00:00 AM"
+            android:fontFamily="monospace"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -67,14 +73,13 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:layout_marginVertical="16dp"
         android:id="@+id/iv_logo"
         android:layout_marginStart="70dp"
         android:src="@drawable/logoums"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ll_waktu"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Tabel di dalam ScrollView -->
@@ -151,21 +156,25 @@
         android:id="@+id/tv_ormawa"
         android:textStyle="bold"
         android:text="ORMAWA UMS"
-        android:textSize="32sp"
+        android:layout_marginStart="64dp"
+        android:fontFamily="monospace"
+        android:layout_marginTop="32dp"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/ll_jadwal_perkuliahan_sem"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/scroll_jadwal"
         app:layout_constraintTop_toBottomOf="@+id/iv_logo"/>
     <ImageView
         android:layout_width="250dp"
         android:layout_height="350dp"
         android:src="@drawable/img"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/scroll_jadwal"
         android:id="@+id/iv_ormawa"
         app:layout_constraintTop_toBottomOf="@id/tv_ormawa"
         app:layout_constraintEnd_toEndOf="parent"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
