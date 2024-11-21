@@ -16,6 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.project.twopointo.ui.Data
 import com.project.twopointo.ui.Schedule
@@ -26,12 +31,17 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     private lateinit var dateTextView: TextView
     private lateinit var timeTextView: TextView
     private lateinit var tableLayout: TableLayout
     private lateinit var ivOrmawa: ImageView
+    private lateinit var viewPager2: ViewPager2
+    private lateinit var handlerVP: Handler
+    private lateinit var imageList: ArrayList<Int>
+    private lateinit var adapter: ImageAdapter
 
     private val apiService by lazy { APIConfig.getService() }
 
@@ -64,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         dateTextView = findViewById(R.id.tv_date)
         timeTextView = findViewById(R.id.tv_time)
         tableLayout = findViewById(R.id.tablelayout_jadwal)
-        ivOrmawa = findViewById(R.id.iv_ormawa)
+
 
         addTableHeader()
         updateDateTime()
@@ -78,6 +88,57 @@ class MainActivity : AppCompatActivity() {
         lastDayOfWeek = getCurrentDayOfWeek()
 
         handler.post(updateRunnable)
+//Image
+        imageSlider()
+        setUpTransformer()
+        viewPager2.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                handlerVP.removeCallbacks(runnable)
+                handlerVP.postDelayed(runnable,5000)
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handlerVP.removeCallbacks(runnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handlerVP.postDelayed(runnable,5000)
+
+    }
+    private val runnable=Runnable{
+        viewPager2.currentItem=viewPager2.currentItem+1
+    }
+
+    private fun setUpTransformer() {
+        val transformer=CompositePageTransformer()
+        transformer.addTransformer(MarginPageTransformer(40))
+        transformer.addTransformer{page,position->
+            val r=1- abs(position)
+            page.scaleY=0.85f+r+0.14f
+        }
+        viewPager2.setPageTransformer(transformer)
+    }
+
+    private fun imageSlider() {
+        viewPager2=findViewById(R.id.viewpager_ormawa)
+        handlerVP=Handler(Looper.myLooper()!!)
+        imageList= ArrayList()
+        imageList.add(R.drawable.img)
+        imageList.add(R.drawable.img_1)
+        imageList.add(R.drawable.img_2)
+        imageList.add(R.drawable.img_3)
+
+        adapter= ImageAdapter(imageList,viewPager2)
+        viewPager2.adapter=adapter
+        viewPager2.offscreenPageLimit=2
+        viewPager2.clipToPadding=false
+        viewPager2.clipChildren=false
+        viewPager2.getChildAt(0).overScrollMode=RecyclerView.OVER_SCROLL_NEVER
     }
 
     private fun getCurrentDayOfWeek(): String {
