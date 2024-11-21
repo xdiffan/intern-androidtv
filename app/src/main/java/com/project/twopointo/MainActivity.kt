@@ -36,10 +36,24 @@ class MainActivity : AppCompatActivity() {
     private val apiService by lazy { APIConfig.getService() }
 
     private val handler = Handler(Looper.getMainLooper())
+    private var lastFetchedData: List<Data>? = null
+    private var lastDayOfWeek: String? = null
+    private var currentIndex = 0
+    private val maxDisplayCount = 5
+
     private val updateRunnable = object : Runnable {
         override fun run() {
-            fetchSchedules()
-            handler.postDelayed(this, 5000) // Update setiap 5 detik
+            val currentDayOfWeek = getCurrentDayOfWeek()
+
+            if (currentDayOfWeek != lastDayOfWeek) {
+                lastDayOfWeek = currentDayOfWeek
+                currentIndex = 0 // Reset indeks jika hari berubah
+                fetchSchedules()
+            } else {
+                fetchSchedules(onlyCheckChanges = true)
+            }
+
+            handler.postDelayed(this, 5000)
         }
     }
 
@@ -57,16 +71,21 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed(object : Runnable {
             override fun run() {
                 updateDateTime()
-                handler.postDelayed(this, 1000) // Update setiap detik
+                handler.postDelayed(this, 1000)
             }
         }, 1000)
+
+        lastDayOfWeek = getCurrentDayOfWeek()
+
         handler.post(updateRunnable)
     }
+
     private fun getCurrentDayOfWeek(): String {
         val calendar = Calendar.getInstance()
         val daysOfWeek = arrayOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
         return daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]
     }
+
     private fun addTableHeader() {
         val headerRow = TableRow(this)
         headerRow.layoutParams = TableRow.LayoutParams(
@@ -87,40 +106,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateDateTime() {
-        // Set the desired time zone here (e.g., "Asia/Jakarta" for Jakarta)
-        val timeZone = TimeZone.getTimeZone("Asia/Jakarta") // Change this to your desired time zone
-
-        // Create a Calendar instance and set its time zone
+        val timeZone = TimeZone.getTimeZone("Asia/Jakarta")
         val calendar = Calendar.getInstance(timeZone)
 
-        // Format the date
         val dateFormat = SimpleDateFormat("dd MMMM ", Locale.getDefault())
-        dateFormat.timeZone = timeZone // Set time zone for date format
+        dateFormat.timeZone = timeZone
         val formattedDate = dateFormat.format(calendar.time)
 
-        // Format the time
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        timeFormat.timeZone = timeZone // Set time zone for time format
+        timeFormat.timeZone = timeZone
         val formattedTime = timeFormat.format(calendar.time)
 
-        // Update the TextViews with formatted date and time
         dateTextView.text = formattedDate
         timeTextView.text = formattedTime
     }
 
-
-    private var currentIndex = 0
-    private val maxDisplayCount = 4
-
-    private fun fetchSchedules() {
+    private fun fetchSchedules(onlyCheckChanges: Boolean = false) {
         val currentDayOfWeek = getCurrentDayOfWeek()
 
         apiService.getSchedules().enqueue(object : Callback<Schedule> {
             override fun onResponse(call: Call<Schedule>, response: Response<Schedule>) {
                 if (response.isSuccessful) {
                     response.body()?.let { schedule ->
-                        val filteredData = schedule.data?.filterNotNull()?.filter { data -> data.day == currentDayOfWeek }
-                        updateTable(filteredData)
+                        val filteredData = schedule.data?.filterNotNull()?.filter { it.day == currentDayOfWeek }
+
+                        if (!onlyCheckChanges || filteredData != lastFetchedData) {
+                            lastFetchedData = filteredData
+                            updateTable(filteredData)
+                        } else {
+                            // Jika hanya ingin menggilir data
+                            updateTable(filteredData, shouldUpdateIndex = true)
+                        }
                     }
                 }
             }
@@ -131,48 +147,52 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun updateTable(data: List<Data>?) {
+    private fun updateTable(data: List<Data>?, shouldUpdateIndex: Boolean = false) {
         data?.let {
-            // Clear existing rows except for the header
             tableLayout.removeViewsInLayout(1, tableLayout.childCount - 1)
 
-            // Calculate the next set of data to display
+            // Jika diminta menggilir data, perbarui indeks
+            if (shouldUpdateIndex) {
+                currentIndex = (currentIndex + maxDisplayCount) % it.size
+            }
+
+            // Ambil subset data untuk ditampilkan
             val dataToDisplay = it.drop(currentIndex).take(maxDisplayCount)
 
-            // Add the new rows to the table
+            // Tambahkan baris baru ke tabel
             for (item in dataToDisplay) {
                 val tableRow = TableRow(this)
                 tableRow.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT
-                )
+                ).apply {
+                    setMargins(0, 0, 0, 0)
+                }
 
                 val rowData = listOf(
                     item.course?.name.orEmpty(),
                     item.lecturer?.name.orEmpty(),
                     item.room.orEmpty(),
                     item.course?.classX.orEmpty(),
-                    item.day.orEmpty()
+                    item.statusId.toString()
                 )
 
                 for (cellData in rowData) {
                     val textView = TextView(this)
                     textView.text = formatTextToTwoWordsPerLine(cellData)
-                    textView.setPadding(24, 24, 24, 24)
-                    textView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                    textView.textAlignment
+                    textView.setPadding(12, 12, 12, 12)
+                    textView.setTextColor(ContextCompat.getColor(this, R.color.colorBlack))
                     tableRow.addView(textView)
+                    tableRow.setBackgroundResource(R.drawable.table_cell_bg)
+
                 }
 
                 tableLayout.addView(tableRow)
             }
-
-            // Update the index for the next display
-            currentIndex += maxDisplayCount
-            if (currentIndex >= it.size) {
-                currentIndex = 0 // Reset to the beginning if we've reached the end of the data
-            }
         }
     }
+
     private fun formatTextToTwoWordsPerLine(text: String): String {
         val words = text.split(" ")
         val formattedText = StringBuilder()
@@ -180,9 +200,9 @@ class MainActivity : AppCompatActivity() {
         for (i in words.indices) {
             formattedText.append(words[i])
             if ((i + 1) % 2 == 0) {
-                formattedText.append("\n") // Pindah ke baris baru setiap dua kata
+                formattedText.append("\n")
             } else if (i != words.lastIndex) {
-                formattedText.append(" ") // Tambahkan spasi jika bukan kata terakhir
+                formattedText.append(" ")
             }
         }
 

@@ -29,4 +29,5 @@
     <!-- Transparansi -->
     <color name="colorTransparent">#00000000</color> <!-- Transparan -->
     <color name="colorSemiTransparent">#80000000</color> <!-- Hitam Transparan -->
+    <color name="colorBlack">#000000</color>
 </resources>

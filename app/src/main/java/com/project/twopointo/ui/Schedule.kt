@@ -32,10 +32,13 @@ data class Data(
     val lecturerId: Int?,
     @SerializedName("room")
     val room: String?,
+    @SerializedName("status_id")
+    val statusId: Int?,
     @SerializedName("start_time")
     val startTime: String?,
     @SerializedName("updated_at")
     val updatedAt: String?
+
 )
 
 @Keep
