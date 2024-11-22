@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var handlerVP: Handler
     private lateinit var imageList: ArrayList<Int>
     private lateinit var adapter: ImageAdapter
+    private lateinit var textView: TextView
 
     private val apiService by lazy { APIConfig.getService() }
 
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         dateTextView = findViewById(R.id.tv_date)
         timeTextView = findViewById(R.id.tv_time)
         tableLayout = findViewById(R.id.tablelayout_jadwal)
+        textView=findViewById(R.id.tv_tahunajaran)
 
 
         addTableHeader()
@@ -85,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }, 1000)
 
+        setSchoolYear()
         lastDayOfWeek = getCurrentDayOfWeek()
 
         handler.post(updateRunnable)
@@ -99,6 +102,27 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun setSchoolYear() {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH) + 1 // Kalender berbasis 0
+
+        val schoolYear: String = if (currentMonth in 8..12) {
+            // Bulan Agustus hingga Desember
+            "Ganjil $currentYear/${currentYear + 1}"
+        } else if (currentMonth in 2..7) {
+            // Bulan Februari hingga Juli
+            "Genap ${currentYear - 1}/$currentYear"
+        } else {
+            // Bulan Januari
+            "Ganjil ${currentYear - 1}/$currentYear"
+        }
+
+        textView.text = schoolYear
+    }
+
+
 
     override fun onPause() {
         super.onPause()
@@ -195,7 +219,6 @@ class MainActivity : AppCompatActivity() {
                             lastFetchedData = filteredData
                             updateTable(filteredData)
                         } else {
-                            // Jika hanya ingin menggilir data
                             updateTable(filteredData, shouldUpdateIndex = true)
                         }
                     }
