@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.project.twopointo"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+
 
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")

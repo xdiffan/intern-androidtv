@@ -7,4 +7,7 @@ import retrofit2.http.GET
 interface APIServiceSchedule {
     @GET("schedules")
     fun getSchedules():Call<Schedule>
+
+    @GET("ukms")
+    fun getUkm():Call<UKM>
 }

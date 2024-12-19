@@ -14,6 +14,10 @@ data class Schedule(
 
 @Keep
 data class Data(
+    @SerializedName("class_id")
+    val classId: Int?,
+    @SerializedName("class")
+    val classX: Class?,
     @SerializedName("course")
     val course: Course?,
     @SerializedName("course_id")
@@ -32,19 +36,30 @@ data class Data(
     val lecturerId: Int?,
     @SerializedName("room")
     val room: String?,
-    @SerializedName("status_id")
-    val statusId: Int?,
     @SerializedName("start_time")
     val startTime: String?,
+    @SerializedName("status")
+    val status: Status?,
+    @SerializedName("status_id")
+    val statusId: Int?,
     @SerializedName("updated_at")
     val updatedAt: String?
+)
 
+@Keep
+data class Class(
+    @SerializedName("created_at")
+    val createdAt: Any?,
+    @SerializedName("id")
+    val id: Int?,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("updated_at")
+    val updatedAt: Any?
 )
 
 @Keep
 data class Course(
-    @SerializedName("class")
-    val classX: String?,
     @SerializedName("code")
     val code: String?,
     @SerializedName("created_at")
@@ -75,4 +90,16 @@ data class Lecturer(
     val phone: String?,
     @SerializedName("updated_at")
     val updatedAt: String?
+)
+
+@Keep
+data class Status(
+    @SerializedName("created_at")
+    val createdAt: Any?,
+    @SerializedName("id")
+    val id: Int?,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("updated_at")
+    val updatedAt: Any?
 )

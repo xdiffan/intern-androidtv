@@ -2,13 +2,12 @@ package com.project.twopointo
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.time.measureTime
 
 object APIConfig {
-    const val baseURL="https://api.dickypurnomo.com/api/"
-    fun getRetrofit():Retrofit{
+    private const val BASEURL="https://api.dickypurnomo.com/api/"
+    private fun getRetrofit():Retrofit{
          return Retrofit.Builder()
-             .baseUrl(baseURL)
+             .baseUrl(BASEURL)
              .addConverterFactory(GsonConverterFactory.create())
              .build()
     }

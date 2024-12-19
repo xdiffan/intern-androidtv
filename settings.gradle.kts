@@ -5,6 +5,7 @@ pluginManagement {
                 includeGroupByRegex("com\\.android.*")
                 includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
+
             }
         }
         mavenCentral()
@@ -16,7 +17,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
     }
+
 }
 
 rootProject.name = "twopointo"
