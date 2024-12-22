@@ -196,8 +196,8 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager_ormawa"
-        android:layout_width="270dp"
-        android:layout_height="370dp"
+        android:layout_width="220dp"
+        android:layout_height="320dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/scroll_jadwal"
         app:layout_constraintTop_toBottomOf="@id/tv_ormawa"/>

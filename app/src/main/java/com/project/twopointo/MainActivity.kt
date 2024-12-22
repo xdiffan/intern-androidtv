@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private var lastFetchedImageUrls: List<String>? = null
     private var lastDayOfWeek: String? = null
     private var currentIndex = 0
-    private val maxDisplayCount = 5
+    private val maxDisplayCount = 8
     private val imageUpdateInterval = 10000L
 
     private val updateRunnable = object : Runnable {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 fetchSchedules(onlyCheckChanges = true)
             }
 //untuk mengatur waktu table
-            handler.postDelayed(this, 10000)
+            handler.postDelayed(this, 3000)
         }
     }
 
@@ -254,7 +254,16 @@ class MainActivity : AppCompatActivity() {
 
                 // Ambil data untuk ditampilkan
                 val dataToDisplay = it.subList(currentIndex, minOf(currentIndex + maxDisplayCount, it.size))
+                val displayMetrics = resources.displayMetrics
+                val widthPixels = displayMetrics.widthPixels
+                val heightPixels = displayMetrics.heightPixels
 
+                // Menentukan params berdasarkan resolusi
+                val paramsReso = if (widthPixels == 1920 && heightPixels == 1080) {
+                    TableRow.LayoutParams(325, 200, 1f) // FHD
+                } else {
+                    TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT) // Default
+                }
                 for (item in dataToDisplay) {
                     val tableRow = TableRow(this)
                     tableRow.layoutParams = TableRow.LayoutParams(
@@ -276,11 +285,11 @@ class MainActivity : AppCompatActivity() {
                         val textView = TextView(this)
                         textView.text = formatTextToTwoWordsPerLine(cellData)
                         textView.gravity=Gravity.CENTER
-                        textView.setPadding(12, 6, 8, 4)
+                        textView.setPadding(12, 8, 12, 6)
                         textView.setTextColor(ContextCompat.getColor(this, R.color.colorBlack))
                         tableRow.addView(textView)
                         tableRow.gravity = Gravity.CENTER
-                        val params = TableRow.LayoutParams(195, 150, 1f)
+                        val params = paramsReso
                         textView.layoutParams = params
                         tableRow.setBackgroundResource(R.drawable.table_cell_bg)
                     }
